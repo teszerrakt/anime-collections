@@ -1,26 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 
-function App() {
+import AnimeListPage from './pages/AnimeListPage/AnimeListPage'
+import AnimeDetailPage from './pages/AnimeDetailPage/AnimeDetailPage'
+import CollectionListPage from './pages/CollectionListPage/CollectionListPage'
+import CollectionDetailPage from './pages/CollectionDetailPage/CollectionDetailPage'
+import Error404Page from './pages/ErrorPage/Error404Page'
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Router>
+      <Routes>
+        <Route path='/animes' element={<AnimeListPage />} />
+        <Route path='/animes/:animedId' element={<AnimeDetailPage />} />
+        <Route path='/collections' element={<CollectionListPage />} />
+        <Route path='/collections/:collectionId' element={<CollectionDetailPage />} />
+        <Route path='/' element={<Navigate to='/animes' />} />
+        <Route path='*' element={<Error404Page />} />
+      </Routes>
+    </Router>
+  )
 }
-
-export default App;
