@@ -9,27 +9,36 @@ import CollectionListPage from './pages/CollectionListPage/CollectionListPage'
 import CollectionDetailPage from './pages/CollectionDetailPage/CollectionDetailPage'
 import Error404Page from './pages/ErrorPage/Error404Page'
 import { COLORS } from './styles/Constants'
+import NavBar from './components/NavBar/NavBar'
 
 export default function App() {
   return (
     <div css={css({
       display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
       background: COLORS.black,
       color: COLORS.green,
       padding: '1rem',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '100%'
+      height: '100%',
     })}>
       <Router>
-        <Routes>
-          <Route path='/animes' element={<AnimeListPage />} />
-          <Route path='/animes/:animedId' element={<AnimeDetailPage />} />
-          <Route path='/collections' element={<CollectionListPage />} />
-          <Route path='/collections/:collectionId' element={<CollectionDetailPage />} />
-          <Route path='/' element={<Navigate to='/animes' />} />
-          <Route path='*' element={<Error404Page />} />
-        </Routes>
+        <NavBar />
+        <div css={css({
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        })}>
+          <Routes>
+            <Route path='/animes' element={<AnimeListPage />} />
+            <Route path='/animes/:animeId' element={<AnimeDetailPage />} />
+            <Route path='/collections' element={<CollectionListPage />} />
+            <Route path='/collections/:collectionId' element={<CollectionDetailPage />} />
+            <Route path='/' element={<Navigate to='/animes' />} />
+            <Route path='*' element={<Error404Page />} />
+          </Routes>
+        </div>
       </Router>
     </div>
   )

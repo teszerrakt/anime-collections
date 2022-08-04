@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { COLORS } from '../../styles/Constants'
+import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from 'react-icons/bs'
 
 interface PaginationProps {
   page: number
@@ -19,12 +20,14 @@ const paginationStyle = css({
     padding: '0 1rem'
   },
   '.btn': {
-    backgroundColor: COLORS.green,
-    color: COLORS.black,
-    padding: '0.5rem 1rem',
-    borderRadius: '0.5rem',
+    display: 'flex',
+    alignItems: 'center',
+    background: 'none',
+    fontSize: '2rem',
+    color: COLORS.green,
     fontWeight: 'bold',
     cursor: 'pointer',
+    border: 'none',
     '&:hover,&:active': {
       filter: 'brightness(0.8)'
     }
@@ -34,9 +37,9 @@ const paginationStyle = css({
 export default function Pagination({ page, showNext, showPrev, onNext, onPrev }: PaginationProps) {
   return (
     <div className='pagination' css={paginationStyle}>
-      {showPrev && <button className='btn prev' onClick={onPrev}>{'<<'}</button>}
+      {showPrev && <button className='btn prev' onClick={onPrev}><BsArrowLeftCircleFill/></button>}
       <span className='currentPage'>{page}</span>
-      {showNext && <button className='btn next' onClick={onNext}>{'>>'}</button>}
+      {showNext && <button className='btn next' onClick={onNext}><BsArrowRightCircleFill/></button>}
     </div>
   )
 }

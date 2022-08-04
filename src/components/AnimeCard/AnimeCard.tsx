@@ -16,11 +16,9 @@ const animeCardStyle = css({
   img: {
     objectFit: 'cover',
     borderRadius: '0.25rem',
-    width: 150,
     height: 250,
     [MQ[1]]: {
-      width: 200,
-      height: 300
+      height: 275
     }
   }
 })
@@ -49,7 +47,7 @@ export default function AnimeCard({imageUrl, title, onClick}: AnimeCardProps) {
   return (
     <div css={animeCardStyle} onClick={onClick}>
       {/* TODO: Add fallback image */}
-      <img src={imageUrl} alt={`${title} image`} />
+      <img src={imageUrl} alt={`${title}`} />
       <div css={titleStyle}>{title}</div>
     </div>
   )

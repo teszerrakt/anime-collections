@@ -11,8 +11,9 @@ import Pagination from '../../components/Pagination/Pagination'
 const AnimeListPageStyle = css({
   display: 'flex',
   flexDirection: 'column',
+  paddingBottom: '5rem',
   '.pagination': {
-    marginTop: '1.5rem'
+    marginTop: '1.5rem',
   }
 })
 
@@ -21,6 +22,9 @@ const AnimeListStyle = css({
   gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
   gap: '1rem',
   [MQ[1]]: {
+    gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+  },
+  [MQ[2]]: {
     gridTemplateColumns: 'repeat(5, minmax(0, 1fr))',
   },
 })
@@ -54,7 +58,7 @@ export default function AnimeListPage() {
   }
 
   return (
-    <div css={AnimeListPageStyle}>
+    <div id='animeListPage' css={AnimeListPageStyle}>
       <div css={AnimeListStyle}>
         {data?.Page.media.map((anime) => {
           const { title: { romaji }, coverImage: { large }, id } = anime
