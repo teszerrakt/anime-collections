@@ -27,7 +27,7 @@ export default function NewCollectionModal({ isVisible, onClose }: NewCollection
     if (newCollections) {
       setCollections(JSON.parse(newCollections))
     }
-  }, [refreshLocalStorage])
+  }, [refreshLocalStorage, setCollections])
 
   const triggerRefreshLocalStorage = () => setRefreshLocalStorage(!refreshLocalStorage)
 
@@ -41,8 +41,8 @@ export default function NewCollectionModal({ isVisible, onClose }: NewCollection
       }, {})
       setCollections(prevState => ({...prevState, ...newCollections}))
     }
-
-    triggerRefreshLocalStorage()
+    
+    onClose()
   }
 
   return (

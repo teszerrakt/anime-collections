@@ -49,12 +49,14 @@ interface CollectionFormProps {
 export default function NewCollectionForm({ onCancel, onSubmit, collections }: CollectionFormProps) {
   const [name, setName] = useState<string>('')
   const [error, setError] = useState({ specialChars: false, unique: false })
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_collections, setCollections] = useLocalStorage(LS_KEY.COLLECTIONS, collections)
   const params = useParams()
   const isError = error.specialChars || error.unique
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
+    // eslint-disable-next-line
     const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/
     const isContainingSpecialChars = specialChars.test(value)
     const isNotUnique = collections.hasOwnProperty(value)
