@@ -61,8 +61,8 @@ export default function AnimeListPage() {
     <div id='animeListPage' css={AnimeListPageStyle}>
       <div css={AnimeListStyle}>
         {data?.Page.media.map((anime) => {
-          const { title: { romaji }, coverImage: { large }, id } = anime
-          return <AnimeCard key={id} imageUrl={large} title={romaji} onClick={() => navigate(`/animes/${id}`)} />
+          const { title: { romaji }, coverImage: { large }, bannerImage, id } = anime
+          return <AnimeCard key={id} imageUrl={large || bannerImage} title={romaji} onClick={() => navigate(`/animes/${id}`)} />
         })}
       </div>
       <Pagination page={page} disablePrev={page === 1} disableNext={!isShowNext} onPrev={prevPage} onNext={nextPage} />

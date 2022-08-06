@@ -5,19 +5,23 @@ import useLocalStorage, { LS_KEY } from '../../hooks/useLocalStorage'
 import { css } from '@emotion/react'
 import { bgOverlay, COLORS } from '../../styles/Constants'
 import { Collections } from './NewCollection/NewCollection'
+import { Dispatch, SetStateAction, useState } from 'react'
+import { BsFillCheckCircleFill } from 'react-icons/bs'
 
 interface CollectionCardProps {
   id: string
+  setChosenCollections?: Dispatch<SetStateAction<string[]>>
 }
 
 const collectionCardStyle = css({
+  position: 'relative',
   borderRadius: '0.25rem',
   background: COLORS.black,
   cursor: 'pointer',
   border: `solid 2px transparent`,
   '&:hover': {
     border: `solid 2px ${COLORS.green}`,
-  }
+  },
 })
 
 const imageStyle = css({
@@ -35,10 +39,23 @@ const additionalInfoStyle = css({
   zIndex: 2,
   padding: '0.5rem',
   fontSize: '1.25rem',
-  fontWeight: 'bold'
+  fontWeight: 'bold',
 })
 
-export default function CollectionCard({id}: CollectionCardProps) {
+const activeOverlayStyle = css({
+  position: 'absolute',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100%',
+  width: '100%',
+  background: `${COLORS.black}80`,
+  zIndex: 10,
+  fontSize: '2rem',
+})
+
+export default function CollectionCard({ id, setChosenCollections }: CollectionCardProps) {
+  const [isClicked, setIsClicked] = useState(false)
   const [collections] = useLocalStorage<Collections>(LS_KEY.COLLECTIONS, {})
   const currentCollection = collections[id]
   const {
@@ -46,10 +63,26 @@ export default function CollectionCard({id}: CollectionCardProps) {
     error,
     loading,
   } = useQuery<AnimeDetailData, AnimeDetailVars>(ANIME_DETAIL, { variables: { id: currentCollection[0] } })
-  
+
+  // TODO: Create Loading Component
+  if (loading) return <div>Loading ...</div>
+  // TODO: Create Error Component
+  if (error) return <div>{JSON.stringify(error)}</div>
+
+  const handleClick = () => {
+    setIsClicked(!isClicked)
+    if (setChosenCollections) {
+      isClicked ?
+        setChosenCollections(prevState => [...prevState.filter(value => value !== id)])
+        :
+        setChosenCollections(prevState => [...prevState, id])
+    }
+  }
+
   return (
-    <div css={collectionCardStyle}>
-      <div css={[bgOverlay, imageStyle]} style={{backgroundImage: `url(${data?.Media.bannerImage})`}}/>
+    <div css={collectionCardStyle} onClick={handleClick}>
+      {isClicked && <div css={activeOverlayStyle}><BsFillCheckCircleFill /></div>}
+      <div css={[bgOverlay, imageStyle]} style={{ backgroundImage: `url(${data?.Media.bannerImage || data?.Media.coverImage.extraLarge})` }} />
       <div css={additionalInfoStyle}>{id} | {currentCollection.length} Anime{currentCollection.length > 1 && 's'}</div>
     </div>
   )

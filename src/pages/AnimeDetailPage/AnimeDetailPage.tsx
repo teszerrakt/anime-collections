@@ -24,7 +24,7 @@ export default function AnimeDetailPage() {
 
   return data ? (
     <div css={css({ paddingBottom: 72 })}>
-      <AnimeHeader bannerImage={data.Media.bannerImage} title={data.Media.title} score={data.Media.averageScore} />
+      <AnimeHeader bannerImage={data.Media.bannerImage || data.Media.coverImage.extraLarge} title={data.Media.title} score={data.Media.averageScore} />
       <div css={css({
         marginTop: '2rem',
         display: 'flex',

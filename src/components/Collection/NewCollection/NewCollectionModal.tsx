@@ -8,6 +8,7 @@ import { css } from '@emotion/react'
 import CollectionCard from '../CollectionCard'
 import { Collections } from './NewCollection'
 import NewCollectionForm from './NewCollectionForm'
+import { useParams } from 'react-router-dom'
 
 interface NewCollectionModalProps {
   isVisible: boolean,
@@ -15,9 +16,11 @@ interface NewCollectionModalProps {
 }
 
 export default function NewCollectionModal({ isVisible, onClose }: NewCollectionModalProps) {
+  const [chosenCollections, setChosenCollections] = useState<string[]>([])
   const [showForm, setShowForm] = useState(false)
   const [refreshLocalStorage, setRefreshLocalStorage] = useState<boolean>(false)
   const [collections, setCollections] = useLocalStorage<Collections>(LS_KEY.COLLECTIONS, {})
+  const params = useParams()
 
   useEffect(() => {
     const newCollections = window.localStorage.getItem(LS_KEY.COLLECTIONS)
@@ -26,15 +29,48 @@ export default function NewCollectionModal({ isVisible, onClose }: NewCollection
     }
   }, [refreshLocalStorage])
 
+  const triggerRefreshLocalStorage = () => setRefreshLocalStorage(!refreshLocalStorage)
+
+  const handleSubmit = () => {
+    if (params.animeId) {
+      const animeId = +params.animeId
+      const newCollections = chosenCollections.reduce((obj: Collections, name) => {
+        const currentCollection = collections[name].filter(id => id !== animeId)
+        obj[name] = [...currentCollection, animeId]
+        return obj
+      }, {})
+      setCollections(prevState => ({...prevState, ...newCollections}))
+    }
+
+    triggerRefreshLocalStorage()
+  }
+
   return (
-    <Modal isVisible={isVisible} header='Add to Collection' onClose={onClose}>
+    <Modal
+      isVisible={isVisible}
+      header='Add to Collection'
+      footer={
+        <ModalFooter
+          onCancel={onClose}
+          onSubmit={handleSubmit}
+          disableSubmit={chosenCollections.length === 0}
+        />
+      }
+      onClose={onClose}
+    >
       <>
-        <Button Icon={<HiPlusCircle />} text='Create New Collection' isFullWidth isLarge onClick={() => setShowForm(true)} />
+        <Button
+          Icon={<HiPlusCircle />}
+          text='Create New Collection'
+          isFullWidth
+          isLarge
+          onClick={() => setShowForm(true)}
+        />
         {showForm && <NewCollectionForm
           collections={collections}
           onSubmit={() => {
             setShowForm(false)
-            setRefreshLocalStorage(!refreshLocalStorage)
+            triggerRefreshLocalStorage()
           }}
           onCancel={() => setShowForm(false)} />}
         <div
@@ -49,10 +85,34 @@ export default function NewCollectionModal({ isVisible, onClose }: NewCollection
           })}
         >
           {Object.keys(collections).map((key) => {
-            return <CollectionCard key={key} id={key} />
+            return <CollectionCard
+              key={key}
+              id={key}
+              setChosenCollections={setChosenCollections}
+            />
           })}
         </div>
       </>
     </Modal>
+  )
+}
+
+interface ModalFooterProps {
+  disableSubmit: boolean
+  onCancel: () => void
+  onSubmit: () => void
+}
+
+const modalFooterStyle = css({
+  display: 'flex',
+  gap: '1rem',
+})
+
+function ModalFooter({ disableSubmit, onSubmit, onCancel }: ModalFooterProps) {
+  return (
+    <div css={modalFooterStyle}>
+      <Button text='Cancel' type='ghost' isFullWidth isLarge onClick={onCancel} />
+      <Button disabled={disableSubmit} text='Submit' isFullWidth isLarge onClick={onSubmit} />
+    </div>
   )
 }
