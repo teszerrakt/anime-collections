@@ -5,6 +5,7 @@ interface Anime {
   coverImage: {
     large: string
   }
+  bannerImage: string
   title: {
     romaji: string
     native: string
@@ -39,6 +40,7 @@ export const ANIME_LIST = gql`
                     romaji
                     native
                 }
+                bannerImage
                 coverImage {
                     large
                 }
@@ -54,6 +56,10 @@ export interface AnimeDetail {
     native: string
   }
   bannerImage: string
+  coverImage: {
+    large: string
+    extraLarge: string
+  }
   description: string
   episodes: number
   genres: string[]
@@ -79,6 +85,10 @@ export const ANIME_DETAIL = gql`
                 native
             }
             bannerImage
+            coverImage {
+                large
+                extraLarge
+            }
             description
             episodes
             genres

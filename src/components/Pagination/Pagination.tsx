@@ -5,8 +5,8 @@ import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from 'react-icons/bs'
 
 interface PaginationProps {
   page: number
-  showPrev: boolean
-  showNext: boolean
+  disablePrev: boolean
+  disableNext: boolean
   onPrev: () => void
   onNext: () => void
 }
@@ -30,16 +30,21 @@ const paginationStyle = css({
     border: 'none',
     '&:hover,&:active': {
       filter: 'brightness(0.8)'
-    }
+    },
+    '&:disabled': {
+      opacity: 0,
+      cursor: 'default',
+      filter: 'none'
+    },
   }
 })
 
-export default function Pagination({ page, showNext, showPrev, onNext, onPrev }: PaginationProps) {
+export default function Pagination({ page, disableNext, disablePrev, onNext, onPrev }: PaginationProps) {
   return (
     <div className='pagination' css={paginationStyle}>
-      {showPrev && <button className='btn prev' onClick={onPrev}><BsArrowLeftCircleFill/></button>}
+      <button className='btn prev' disabled={disablePrev} onClick={onPrev}><BsArrowLeftCircleFill/></button>
       <span className='currentPage'>{page}</span>
-      {showNext && <button className='btn next' onClick={onNext}><BsArrowRightCircleFill/></button>}
+      <button className='btn next' disabled={disableNext} onClick={onNext}><BsArrowRightCircleFill/></button>
     </div>
   )
 }

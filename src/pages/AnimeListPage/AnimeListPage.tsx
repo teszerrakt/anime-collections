@@ -3,7 +3,7 @@ import { css } from '@emotion/react'
 import { useQuery } from '@apollo/client'
 import { ANIME_LIST, AnimeListData, AnimeListVars } from '../../gql/queries'
 import { MQ } from '../../styles/Constants'
-import AnimeCard from '../../components/AnimeCard/AnimeCard'
+import AnimeCard from '../../components/Anime/AnimeCard'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Pagination from '../../components/Pagination/Pagination'
@@ -11,7 +11,7 @@ import Pagination from '../../components/Pagination/Pagination'
 const AnimeListPageStyle = css({
   display: 'flex',
   flexDirection: 'column',
-  paddingBottom: '5rem',
+  paddingBottom: 72,
   '.pagination': {
     marginTop: '1.5rem',
   }
@@ -61,11 +61,11 @@ export default function AnimeListPage() {
     <div id='animeListPage' css={AnimeListPageStyle}>
       <div css={AnimeListStyle}>
         {data?.Page.media.map((anime) => {
-          const { title: { romaji }, coverImage: { large }, id } = anime
-          return <AnimeCard key={id} imageUrl={large} title={romaji} onClick={() => navigate(`/animes/${id}`)} />
+          const { title: { romaji }, coverImage: { large }, bannerImage, id } = anime
+          return <AnimeCard key={id} imageUrl={large || bannerImage} title={romaji} onClick={() => navigate(`/animes/${id}`)} />
         })}
       </div>
-      <Pagination page={page} showPrev={page > 1} showNext={!!isShowNext} onPrev={prevPage} onNext={nextPage} />
+      <Pagination page={page} disablePrev={page === 1} disableNext={!isShowNext} onPrev={prevPage} onNext={nextPage} />
     </div>
   )
 }

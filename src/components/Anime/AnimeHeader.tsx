@@ -1,19 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { AiFillStar } from 'react-icons/ai'
-import { COLORS, MQ } from '../../styles/Constants'
+import { COLORS, MQ, bgOverlay } from '../../styles/Constants'
 import { css } from '@emotion/react'
-
-const bgOverlay = css({
-  '&:before': {
-    content: `""`,
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    height: '100%',
-    width: '100%',
-    background: `linear-gradient(180deg, ${COLORS.black}00 0%, ${COLORS.black}F5 75%, ${COLORS.black} 100%)`,
-  },
-})
 
 const animeBannerStyle = css({
   position: 'relative',
