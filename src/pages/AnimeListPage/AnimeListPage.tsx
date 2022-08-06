@@ -11,7 +11,7 @@ import Pagination from '../../components/Pagination/Pagination'
 const AnimeListPageStyle = css({
   display: 'flex',
   flexDirection: 'column',
-  paddingBottom: '5rem',
+  paddingBottom: 72,
   '.pagination': {
     marginTop: '1.5rem',
   }
