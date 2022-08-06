@@ -25,12 +25,12 @@ const navBarStyle = css({
   position: 'fixed',
   bottom: 0,
   display: 'flex',
+  height: 72,
   width: '100vw',
   justifyContent: 'center',
   alignItems: 'center',
   gap: '1rem',
   background: COLORS['dark-gray'],
-  padding: '0.5rem 0',
   zIndex: 2,
   a: {
     display: 'flex',
