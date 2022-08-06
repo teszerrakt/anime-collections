@@ -4,7 +4,7 @@ import { css } from '@emotion/react'
 import { COLORS } from '../../styles/Constants'
 
 interface DetailCardProps {
-  title: string,
+  header: React.ReactNode,
   children?: React.ReactNode
 }
 
@@ -12,7 +12,7 @@ const detailCardStyle = css({
   padding: '1rem',
   background: COLORS['dark-gray'],
   borderRadius: '0.5rem',
-  '.title': {
+  '.header': {
     fontWeight: 'bold',
     fontSize: '1.5rem',
     paddingBottom: '0.5rem',
@@ -27,10 +27,10 @@ const detailCardStyle = css({
   }
 })
 
-export default function DetailCard({children, title}: DetailCardProps) {
+export default function DetailCard({children, header}: DetailCardProps) {
   return (
     <div css={detailCardStyle}>
-      <div className='title'>{title}</div>
+      <div className='header'>{header}</div>
       <div className='content'>{children}</div>
     </div>
   )
@@ -42,10 +42,9 @@ interface DetailInfoProps {
 }
 
 const detailInfoStyle = css({
-  display: 'flex',
-  alignItems: 'flex-start',
+  display: 'grid',
+  gridTemplateColumns: '100px auto',
   '.label': {
-    flexBasis: 100,
     fontWeight: 'bold',
   }
 })

@@ -3,7 +3,7 @@ import { css } from '@emotion/react'
 import { useQuery } from '@apollo/client'
 import { ANIME_LIST, AnimeListData, AnimeListVars } from '../../gql/queries'
 import { MQ } from '../../styles/Constants'
-import AnimeCard from '../../components/AnimeCard/AnimeCard'
+import AnimeCard from '../../components/Anime/AnimeCard'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Pagination from '../../components/Pagination/Pagination'
@@ -65,7 +65,7 @@ export default function AnimeListPage() {
           return <AnimeCard key={id} imageUrl={large} title={romaji} onClick={() => navigate(`/animes/${id}`)} />
         })}
       </div>
-      <Pagination page={page} showPrev={page > 1} showNext={!!isShowNext} onPrev={prevPage} onNext={nextPage} />
+      <Pagination page={page} disablePrev={page === 1} disableNext={!isShowNext} onPrev={prevPage} onNext={nextPage} />
     </div>
   )
 }
