@@ -35,6 +35,7 @@ export default function CollectionListPage() {
             id={key}
             onClick={() => navigate(`/collections/${key}`)}
             color={COLORS['dark-gray']}
+            showUtilities
           />
         })}
       </div>
