@@ -85,9 +85,9 @@ export default function NewCollectionModal({ isVisible, onClose }: NewCollection
 }
 
 interface ModalFooterProps {
-  disableSubmit: boolean
-  onCancel: () => void
-  onSubmit: () => void
+  disableSubmit?: boolean
+  onCancel?: () => void
+  onSubmit?: () => void
 }
 
 const modalFooterStyle = css({
