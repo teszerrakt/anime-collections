@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { MQ } from '../../styles/Constants'
+import { COLORS, MQ } from '../../styles/Constants'
 import { useNavigate } from 'react-router-dom'
 import useLocalStorage, { LS_KEY } from '../../hooks/useLocalStorage'
 import CollectionCard from '../../components/Collection/CollectionCard'
@@ -34,6 +34,7 @@ export default function CollectionListPage() {
             key={key}
             id={key}
             onClick={() => navigate(`/collections/${key}`)}
+            color={COLORS['dark-gray']}
           />
         })}
       </div>
