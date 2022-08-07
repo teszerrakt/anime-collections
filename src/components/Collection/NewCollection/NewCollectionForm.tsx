@@ -84,7 +84,7 @@ export default function NewCollectionForm({ onCancel, onSubmit, collections, col
   }
 
   return (
-    <div css={collectionFormStyle(color)}>
+    <form css={collectionFormStyle(color)}>
       <div css={[isError && errorStyle, labelStyle]}>Collection Name</div>
       <input autoFocus css={[inputStyle(inputColor), isError && errorStyle]} onChange={handleChange} onKeyDown={handleKeydown}
              value={name} />
@@ -100,6 +100,6 @@ export default function NewCollectionForm({ onCancel, onSubmit, collections, col
         <Button text='Cancel' type='ghost' isFullWidth isLarge onClick={onCancel} />
         <Button disabled={isError || !name} text='Submit' isFullWidth isLarge onClick={handleSubmit} />
       </div>
-    </div>
+    </form>
   )
 }

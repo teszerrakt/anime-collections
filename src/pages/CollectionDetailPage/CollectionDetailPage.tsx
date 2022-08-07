@@ -11,6 +11,7 @@ import { IoIosArrowBack } from 'react-icons/io'
 import { BsFillTrashFill } from 'react-icons/bs'
 import { useState } from 'react'
 import ConfirmationModal from '../../components/Modal/ConfirmationModal/ConfirmationModal'
+import Empty from '../../components/Empty/Empty'
 
 const HEADER_HEIGHT = 72
 
@@ -42,12 +43,7 @@ const emptyStyle = css({
   alignItems: 'center',
   justifyContent: 'center',
   height: `calc(100vh - 2 * 1rem - ${HEADER_HEIGHT}px)`,
-  paddingBottom: 0,
-  '> span': {
-    textAlign: 'center',
-    fontSize: '1.75rem',
-    marginBottom: '1rem',
-  },
+  padding: 0,
 })
 
 const headerStyle = css({
@@ -84,7 +80,7 @@ export default function CollectionDetailPage() {
       <header css={headerStyle}><IoIosArrowBack onClick={() => navigate('/collections')} /> {collectionId}</header>
       <div css={[collectionDetailPageStyle, isEmpty && emptyStyle]}>
         {isEmpty ?
-          <span>You haven't added any anime to this collection.</span>
+          <Empty message={`You haven't added any anime to this collection.`}/>
           :
           <div css={collectionDetailStyle}>
             {currentCollection.map(id => <CollectionAnimeCard id={id} key={id}/>)}
