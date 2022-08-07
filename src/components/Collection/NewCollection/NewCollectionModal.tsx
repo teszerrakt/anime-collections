@@ -20,6 +20,7 @@ export default function NewCollectionModal({ isVisible, onClose }: NewCollection
   const [chosenCollections, setChosenCollections] = useState<string[]>([])
   const [showForm, setShowForm] = useState(false)
   const [collections, setCollections] = useLocalStorage<Collections>(LS_KEY.COLLECTIONS, {})
+  const isEmpty = Object.keys(collections).length < 1
   const params = useParams()
 
   const handleSubmit = () => {
@@ -53,7 +54,7 @@ export default function NewCollectionModal({ isVisible, onClose }: NewCollection
           text='Create New Collection'
           isFullWidth
           isLarge
-          onClick={() => setShowForm(true)}
+          onClick={() => setShowForm(!showForm)}
         />
         {showForm && <NewCollectionForm
           collections={collections}
@@ -68,16 +69,20 @@ export default function NewCollectionModal({ isVisible, onClose }: NewCollection
             display: 'flex',
             flexDirection: 'column',
             gap: '0.5rem',
+            textAlign: 'center',
           })}
         >
-          {Object.keys(collections).map((key) => {
-            return <CollectionCard
-              key={key}
-              id={key}
-              color={COLORS.black}
-              setChosenCollections={setChosenCollections}
-            />
-          })}
+          {!isEmpty ? Object.keys(collections).map((key) => {
+              return <CollectionCard
+                key={key}
+                id={key}
+                color={COLORS.black}
+                setChosenCollections={setChosenCollections}
+              />
+            })
+            :
+            !showForm && <span>You don't have any collection.</span>
+          }
         </div>
       </>
     </Modal>

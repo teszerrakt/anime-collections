@@ -82,6 +82,7 @@ export default function CollectionCard({
   const [showModal, setShowModal] = useState<boolean>(false)
   const [chosenCollection, setChosenCollection] = useState<string>('')
   const currentCollection = collections[id]
+  const isEmpty = currentCollection.length < 1
   const {
     data,
     error,
@@ -114,9 +115,9 @@ export default function CollectionCard({
   }
 
   // TODO: Create Loading Component
-  if (loading) return <div>Loading ...</div>
+  if (loading && !isEmpty) return <div>Loading ...</div>
   // TODO: Create Error Component
-  if (error) return <div>{JSON.stringify(error)}</div>
+  if (error && !isEmpty) return <div>{JSON.stringify(error)}</div>
 
   return (
     <div css={collectionCardStyle(color)} onClick={setChosenCollections ? handleClick : onClick}>
