@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { useState } from 'react'
-import Button from '../../Button/Button'
+import Button from '../Button/Button'
 import { HiPlusCircle } from 'react-icons/hi'
-import NewCollectionModal from './NewCollectionModal'
+import NewCollectionModal from './NewCollection/NewCollectionModal'
 
 export interface Collections {
   [collectionId: string]: number[]

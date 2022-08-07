@@ -6,7 +6,7 @@ import Button from '../../Button/Button'
 import { HiPlusCircle } from 'react-icons/hi'
 import { css } from '@emotion/react'
 import CollectionCard from '../CollectionCard'
-import { Collections } from './NewCollection'
+import { Collections } from '../AddToCollectionButton'
 import NewCollectionForm from './NewCollectionForm'
 import { useParams } from 'react-router-dom'
 
@@ -27,7 +27,8 @@ export default function NewCollectionModal({ isVisible, onClose }: NewCollection
     if (newCollections) {
       setCollections(JSON.parse(newCollections))
     }
-  }, [refreshLocalStorage, setCollections])
+    // eslint-disable-next-line
+  }, [refreshLocalStorage])
 
   const triggerRefreshLocalStorage = () => setRefreshLocalStorage(!refreshLocalStorage)
 
@@ -39,9 +40,9 @@ export default function NewCollectionModal({ isVisible, onClose }: NewCollection
         obj[name] = [...currentCollection, animeId]
         return obj
       }, {})
-      setCollections(prevState => ({...prevState, ...newCollections}))
+      setCollections(prevState => ({ ...prevState, ...newCollections }))
     }
-    
+
     onClose()
   }
 

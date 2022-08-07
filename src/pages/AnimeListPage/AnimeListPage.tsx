@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client'
 import { ANIME_LIST, AnimeListData, AnimeListVars } from '../../gql/queries'
 import { MQ } from '../../styles/Constants'
 import AnimeCard from '../../components/Anime/AnimeCard'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Pagination from '../../components/Pagination/Pagination'
 
@@ -40,10 +40,9 @@ export default function AnimeListPage() {
   const navigate = useNavigate()
   const isShowNext = data?.Page.pageInfo.hasNextPage
 
-  // TODO: Create Loading Component
-  if (loading) return <div>Loading ...</div>
-  // TODO: Create Error Component
-  if (error) return <div>{JSON.stringify(error)}</div>
+  useEffect(() => {
+    window.scrollTo({top: 0, behavior: 'smooth'})
+  }, [page])
 
   const nextPage = () => {
     let newPage = page + 1
@@ -56,6 +55,11 @@ export default function AnimeListPage() {
     if (page < 1) newPage = 1
     setPage(newPage)
   }
+
+  // TODO: Create Loading Component
+  if (loading) return <div>Loading ...</div>
+  // TODO: Create Error Component
+  if (error) return <div>{JSON.stringify(error)}</div>
 
   return (
     <div id='animeListPage' css={AnimeListPageStyle}>

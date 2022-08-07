@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { COLORS, MQ } from '../../styles/Constants'
+import defaultImage from '../../assets/image/default-cover-image.png'
 
 const animeCardStyle = css({
   display: 'flex',
@@ -18,7 +19,7 @@ const animeCardStyle = css({
     borderRadius: '0.25rem',
     height: 250,
     [MQ[1]]: {
-      height: 275
+      height: 375
     }
   }
 })
@@ -30,10 +31,7 @@ const titleStyle = css({
   overflow: 'hidden',
   whiteSpace: 'nowrap',
   fontWeight: 'bold',
-  width: 150,
-  [MQ[1]]: {
-    width: 200
-  }
+  width: '100%'
 })
 
 interface AnimeCardProps {
@@ -46,8 +44,7 @@ export default function AnimeCard({imageUrl, title, onClick}: AnimeCardProps) {
 
   return (
     <div css={animeCardStyle} onClick={onClick}>
-      {/* TODO: Add fallback image */}
-      <img src={imageUrl} alt={`${title}`} />
+      <img src={imageUrl || defaultImage} alt={`${title}`} />
       <div css={titleStyle}>{title}</div>
     </div>
   )

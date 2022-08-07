@@ -22,6 +22,7 @@
     "jsxImportSource": "@emotion/react"
   },
   "include": [
-    "src"
+    "src",
+    "src/declaration.d.ts"
   ]
 }
