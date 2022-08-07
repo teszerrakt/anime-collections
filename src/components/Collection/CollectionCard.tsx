@@ -9,6 +9,7 @@ import { Dispatch, SetStateAction, useState } from 'react'
 import { BsFillCheckCircleFill, BsFillTrashFill } from 'react-icons/bs'
 import defaultImage from '../../assets/image/default-banner-image-small.png'
 import ConfirmationModal from '../Modal/ConfirmationModal/ConfirmationModal'
+import Loading  from '../Loading/Loading'
 
 interface CollectionCardProps {
   id: string
@@ -70,6 +71,18 @@ const utilityContainerStyle = css({
   },
 })
 
+const cardLoadingStyle = css({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  background: COLORS['dark-gray'],
+  height: 144,
+  borderRadius: '0.25rem',
+  '> div': {
+    top: '0.5rem'
+  }
+})
+
 export default function CollectionCard({
   id,
   setChosenCollections,
@@ -114,8 +127,7 @@ export default function CollectionCard({
     }
   }
 
-  // TODO: Create Loading Component
-  if (loading && !isEmpty) return <div>Loading ...</div>
+  if (loading && !isEmpty) return <Loading wrapperCss={cardLoadingStyle}/>
   // TODO: Create Error Component
   if (error && !isEmpty) return <div>{JSON.stringify(error)}</div>
 

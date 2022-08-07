@@ -10,6 +10,7 @@ import { Collections } from '../AddToCollectionButton'
 import NewCollectionForm from './NewCollectionForm'
 import { useParams } from 'react-router-dom'
 import { COLORS } from '../../../styles/Constants'
+import Empty from '../../Empty/Empty'
 
 interface NewCollectionModalProps {
   isVisible: boolean,
@@ -81,7 +82,13 @@ export default function NewCollectionModal({ isVisible, onClose }: NewCollection
               />
             })
             :
-            !showForm && <span>You don't have any collection.</span>
+            !showForm && <Empty
+              wrapperCss={css({
+                display: 'flex',
+                justifyContent: 'center',
+              })}
+              message={`You don't have any collection.`}
+            />
           }
         </div>
       </>

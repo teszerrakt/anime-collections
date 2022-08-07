@@ -8,6 +8,7 @@ import Button from '../../components/Button/Button'
 import { HiPlusCircle } from 'react-icons/hi'
 import NewCollectionForm from '../../components/Collection/NewCollection/NewCollectionForm'
 import { useState } from 'react'
+import Empty from '../../components/Empty/Empty'
 
 const collectionListPageStyle = css({
   display: 'flex',
@@ -42,10 +43,12 @@ const emptyStyle = css({
   justifyContent: 'flex-start',
   marginTop: 100,
   height: '100vh',
-  '> span': {
-    textAlign: 'center',
-    fontSize: '1.75rem',
-    marginBottom: '1rem'
+  '> div': {
+    margin: '0 auto 1rem'
+  },
+  '&:last-child': {
+    marginTop: '1rem',
+    width: '100%',
   }
 })
 
@@ -58,7 +61,7 @@ export default function CollectionListPage() {
   return (
     <div css={collectionListPageStyle}>
       <div css={[formContainerStyle, isEmpty && emptyStyle]}>
-        {isEmpty && <span>You don't have any collection.</span>}
+        {isEmpty && <Empty message={`You don't have any collection.`}/>}
         <Button
           Icon={<HiPlusCircle />}
           text='Create New Collection'

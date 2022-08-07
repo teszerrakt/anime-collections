@@ -12,11 +12,12 @@ import { useEffect, useState } from 'react'
 import { AnimeCollection, reverseMapCollections } from '../../utils/utils'
 import { IoIosArrowForward } from 'react-icons/io'
 import { COLORS } from '../../styles/Constants'
+import Loading, { loadingPageStyle } from '../../components/Loading/Loading'
 
 const collectionListStyle = css({
   display: 'flex',
   flexWrap: 'wrap',
-  gap: '0.25rem'
+  gap: '0.25rem',
 })
 
 const collectionStyle = css({
@@ -53,8 +54,7 @@ export default function AnimeDetailPage() {
     setAnimeCollections(reverseMapCollections(collections))
   }, [collections])
 
-  // TODO: Create Loading Component
-  if (loading) return <div>Loading ...</div>
+  if (loading) return <Loading wrapperCss={loadingPageStyle} message='Loading Anime Detail'/>
   // TODO: Create Error Component
   if (error) return <div>{JSON.stringify(error)}</div>
 
