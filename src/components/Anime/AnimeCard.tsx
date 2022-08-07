@@ -35,7 +35,7 @@ const titleStyle = css({
 })
 
 interface AnimeCardProps {
-  imageUrl: string
+  imageUrl?: string
   title: string
   onClick?: () => void
 }
