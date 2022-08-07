@@ -32,7 +32,7 @@ const navBarStyle = css({
   alignItems: 'center',
   gap: '1rem',
   background: COLORS['dark-gray'],
-  zIndex: 2,
+  zIndex: 100,
   boxShadow: `0 -0.5rem 1rem 0.5rem ${COLORS.black}80`,
   a: {
     display: 'flex',

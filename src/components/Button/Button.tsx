@@ -11,6 +11,7 @@ interface ButtonProps {
   disabled?: boolean
   type?: 'primary' | 'ghost'
   isLarge?: boolean
+  css?: any
 }
 
 const buttonStyle = css({

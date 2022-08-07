@@ -7,22 +7,22 @@ import { useParams } from 'react-router-dom'
 import Button from '../../Button/Button'
 import { Collections } from '../AddToCollectionButton'
 
-const collectionFormStyle = css({
+const collectionFormStyle = (color: string) => css({
   marginTop: '1rem',
   padding: '1rem',
   borderRadius: '0.25rem',
-  backgroundColor: COLORS.black,
+  backgroundColor: color,
 })
 
 const labelStyle = css({ fontSize: '0.875rem', paddingBottom: '0.25rem' })
 
-const inputStyle = css({
+const inputStyle = (inputColor: string) => css({
   display: 'flex',
   width: 'calc(100% - 1rem)',
   flexDirection: 'column',
   marginBottom: '1rem',
   padding: '0.5rem',
-  backgroundColor: COLORS['dark-gray'],
+  backgroundColor: inputColor,
   color: COLORS.green,
   borderRadius: '0.25rem',
   border: `solid 1px ${COLORS.green}`,
@@ -46,9 +46,11 @@ interface CollectionFormProps {
   collections: Collections
   onCancel: () => void
   onSubmit: () => void
+  color?: string
+  inputColor?: string
 }
 
-export default function NewCollectionForm({ onCancel, onSubmit, collections }: CollectionFormProps) {
+export default function NewCollectionForm({ onCancel, onSubmit, collections, color = COLORS.black, inputColor = COLORS['dark-gray'] }: CollectionFormProps) {
   const [name, setName] = useState<string>('')
   const [error, setError] = useState({ specialChars: false, unique: false })
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -68,12 +70,10 @@ export default function NewCollectionForm({ onCancel, onSubmit, collections }: C
   }
 
   const handleSubmit = () => {
-    if (params.animeId) {
-      const currentCollection = collections[name] || []
-      const newAnimeList = [...currentCollection, +params.animeId]
-      setCollections({ ...collections, [name]: newAnimeList })
-      onSubmit()
-    }
+    const currentCollection = collections[name] || []
+    const newAnimeList = params.animeId ? [...currentCollection, +params.animeId] : []
+    setCollections({ ...collections, [name]: newAnimeList })
+    onSubmit()
     setName('')
   }
 
@@ -84,9 +84,9 @@ export default function NewCollectionForm({ onCancel, onSubmit, collections }: C
   }
 
   return (
-    <div css={collectionFormStyle}>
+    <div css={collectionFormStyle(color)}>
       <div css={[isError && errorStyle, labelStyle]}>Collection Name</div>
-      <input autoFocus css={[inputStyle, isError && errorStyle]} onChange={handleChange} onKeyDown={handleKeydown}
+      <input autoFocus css={[inputStyle(inputColor), isError && errorStyle]} onChange={handleChange} onKeyDown={handleKeydown}
              value={name} />
       <div css={[validationStyle, errorStyle]}>
         {error.specialChars && <span>Your collection name cannot contain special characters.</span>}
