@@ -13,27 +13,27 @@ interface CollectionCardProps {
   id: string
   setChosenCollections?: Dispatch<SetStateAction<string[]>>
   onClick?: () => void
+  color?: string
 }
 
-const collectionCardStyle = css({
+const collectionCardStyle = (color: string) => css({
   position: 'relative',
   borderRadius: '0.25rem',
-  background: COLORS.black,
+  background: color,
   cursor: 'pointer',
-  border: `solid 2px transparent`,
   '&:hover': {
-    border: `solid 2px ${COLORS.green}`,
+    filter: 'brightness(0.6)'
   },
 })
 
-const imageStyle = css({
+const imageStyle = (color: string) => css({
   height: 100,
   borderTopLeftRadius: '0.25rem',
   borderTopRightRadius: '0.25rem',
   backgroundSize: 'cover',
   position: 'relative',
   '&:before': {
-    background: `linear-gradient(180deg, ${COLORS.black}00 0%, ${COLORS.black} 100%)`,
+    background: `linear-gradient(180deg, ${color}00 0%, ${color} 100%)`,
   },
 })
 
@@ -56,7 +56,7 @@ const activeOverlayStyle = css({
   fontSize: '2rem',
 })
 
-export default function CollectionCard({ id, setChosenCollections, onClick }: CollectionCardProps) {
+export default function CollectionCard({ id, setChosenCollections, onClick, color = COLORS.black }: CollectionCardProps) {
   const [isClicked, setIsClicked] = useState(false)
   const [collections] = useLocalStorage<Collections>(LS_KEY.COLLECTIONS, {})
   const currentCollection = collections[id]
@@ -82,9 +82,9 @@ export default function CollectionCard({ id, setChosenCollections, onClick }: Co
   }
 
   return (
-    <div css={collectionCardStyle} onClick={setChosenCollections ? handleClick : onClick}>
+    <div css={collectionCardStyle(color)} onClick={setChosenCollections ? handleClick : onClick}>
       {isClicked && <div css={activeOverlayStyle}><BsFillCheckCircleFill /></div>}
-      <div css={[bgOverlay, imageStyle]} style={{ backgroundImage: `url(${data?.Media.bannerImage || data?.Media.coverImage.extraLarge || defaultImage})` }} />
+      <div css={[bgOverlay, imageStyle(color)]} style={{ backgroundImage: `url(${data?.Media.bannerImage || data?.Media.coverImage.extraLarge || defaultImage})` }} />
       <div css={additionalInfoStyle}>{id} | {currentCollection.length} Anime{currentCollection.length > 1 && 's'}</div>
     </div>
   )

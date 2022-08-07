@@ -36,29 +36,21 @@ const modalContainerStyle = css({
     width: 500,
   },
   '> *': {
-    padding: '1rem'
+    padding: '1rem',
   },
 })
 
 const modalHeaderStyle = css({
   fontWeight: 'bold',
   fontSize: '1.5rem',
-  borderBottom: `solid 1px ${COLORS.green}`
-})
-
-const modalBodyStyle = css({
-})
-
-const modalFooterStyle = css({
-
+  borderBottom: `solid 1px ${COLORS.green}`,
 })
 
 const Modal = ({ isVisible, header, footer, children, onClose }: ModalProps) => {
   const showModal = (isVisible)
 
   useEffect(() => {
-    const overflowStyle = isVisible ? 'hidden' : 'unset'
-    document.body.style.overflow = overflowStyle
+    document.body.style.overflow = isVisible ? 'hidden' : 'unset'
   }, [isVisible])
 
   return showModal ? ReactDOM.createPortal(
@@ -66,11 +58,11 @@ const Modal = ({ isVisible, header, footer, children, onClose }: ModalProps) => 
       <div css={modalOverlayStyle} onClick={onClose}>
         <div css={modalContainerStyle} onClick={event => event.stopPropagation()}>
           {header && <div css={modalHeaderStyle}>{header}</div>}
-          {children && <div css={modalBodyStyle}>{children}</div>}
-          {footer && <div css={modalFooterStyle}>{footer}</div>}
+          {children && <div>{children}</div>}
+          {footer && <div>{footer}</div>}
         </div>
       </div>
-    </>, document.body
+    </>, document.body,
   ) : null
 }
 

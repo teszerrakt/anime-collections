@@ -1,12 +1,40 @@
 /** @jsxImportSource @emotion/react */
 import { useQuery } from '@apollo/client'
 import { ANIME_DETAIL, AnimeDetailData, AnimeDetailVars } from '../../gql/queries'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import AnimeHeader from '../../components/Anime/AnimeHeader'
 import { Interweave } from 'interweave'
 import DetailCard, { DetailInfo } from '../../components/DetailCard/DetailCard'
 import { css } from '@emotion/react'
 import AddToCollection from '../../components/Collection/AddToCollectionButton'
+import useLocalStorage, { LS_KEY } from '../../hooks/useLocalStorage'
+import { useEffect, useState } from 'react'
+import { AnimeCollection, reverseMapCollections } from '../../utils/utils'
+import { IoIosArrowForward } from 'react-icons/io'
+import { COLORS } from '../../styles/Constants'
+
+const collectionListStyle = css({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '0.25rem'
+})
+
+const collectionStyle = css({
+  display: 'flex',
+  alignItems: 'center',
+  span: {
+    backgroundColor: COLORS.black,
+    padding: '0.25rem 0.5rem',
+    borderRadius: '0.5rem',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.25rem',
+    '&:hover': {
+      filter: 'brightness(0.8)',
+    },
+  },
+})
 
 export default function AnimeDetailPage() {
   const params = useParams()
@@ -16,6 +44,14 @@ export default function AnimeDetailPage() {
     error,
     loading,
   } = useQuery<AnimeDetailData, AnimeDetailVars>(ANIME_DETAIL, { variables: { id: +animeId } })
+  const [collections] = useLocalStorage(LS_KEY.COLLECTIONS, {})
+  const [animeCollections, setAnimeCollections] = useState<AnimeCollection>(() => reverseMapCollections(collections))
+  const navigate = useNavigate()
+  const collectionList = animeCollections[+animeId]
+
+  useEffect(() => {
+    setAnimeCollections(reverseMapCollections(collections))
+  }, [collections])
 
   // TODO: Create Loading Component
   if (loading) return <div>Loading ...</div>
@@ -24,7 +60,8 @@ export default function AnimeDetailPage() {
 
   return data ? (
     <div css={css({ paddingBottom: 72 })}>
-      <AnimeHeader bannerImage={data.Media.bannerImage || data.Media.coverImage.extraLarge} title={data.Media.title} score={data.Media.averageScore} />
+      <AnimeHeader bannerImage={data.Media.bannerImage || data.Media.coverImage.extraLarge} title={data.Media.title}
+                   score={data.Media.averageScore} />
       <div css={css({
         marginTop: '2rem',
         display: 'flex',
@@ -32,15 +69,32 @@ export default function AnimeDetailPage() {
         gap: '1rem',
       })}>
         <DetailCard
-          header={<div css={css({ display: 'flex', justifyContent: 'space-between' })}>Details <AddToCollection />
+          header={<div css={css({ display: 'flex', justifyContent: 'space-between' })}>Collections <AddToCollection />
           </div>}
         >
+          {collectionList ?
+            <div css={collectionListStyle}>
+              {collectionList.map((collection) => (
+                <div
+                  css={collectionStyle}
+                  key={collection}
+                  onClick={() => navigate(`/collections/${collection}`)}
+                >
+                  <span>{collection}<IoIosArrowForward /></span>
+                </div>))}
+            </div>
+            :
+            `You haven't add ${data.Media.title.romaji || 'this anime'} to any collections.`
+          }
+        </DetailCard>
+        <DetailCard header='Details'>
           <DetailInfo label='Genres'>{data.Media.genres.join(', ')}</DetailInfo>
           <DetailInfo label='Season'>{data.Media.season}</DetailInfo>
           <DetailInfo label='Year'>{data.Media.seasonYear}</DetailInfo>
           <DetailInfo label='Episodes'>{data.Media.episodes}</DetailInfo>
         </DetailCard>
         <DetailCard header='Descriptions'>
+          {/* Interweave is used to safely input HTML to react component without using 'dangerouslySetInnerHTML'  */}
           <Interweave css={css({
             br: {
               display: 'block',

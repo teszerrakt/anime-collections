@@ -14,6 +14,8 @@ const collectionFormStyle = css({
   backgroundColor: COLORS.black,
 })
 
+const labelStyle = css({ fontSize: '0.875rem', paddingBottom: '0.25rem' })
+
 const inputStyle = css({
   display: 'flex',
   width: 'calc(100% - 1rem)',
@@ -34,8 +36,8 @@ const errorStyle = css({
   borderColor: 'darkred',
   color: 'darkred',
   '&:hover': {
-    borderColor: 'darkred'
-  }
+    borderColor: 'darkred',
+  },
 })
 
 const validationStyle = css({ fontSize: '0.75rem' })
@@ -75,9 +77,17 @@ export default function NewCollectionForm({ onCancel, onSubmit, collections }: C
     setName('')
   }
 
+  const handleKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.code === 'Enter' && !isError) {
+      handleSubmit()
+    }
+  }
+
   return (
     <div css={collectionFormStyle}>
-      <input css={[inputStyle, isError && errorStyle]} onChange={handleChange} value={name} />
+      <div css={[isError && errorStyle, labelStyle]}>Collection Name</div>
+      <input autoFocus css={[inputStyle, isError && errorStyle]} onChange={handleChange} onKeyDown={handleKeydown}
+             value={name} />
       <div css={[validationStyle, errorStyle]}>
         {error.specialChars && <span>Your collection name cannot contain special characters.</span>}
         {error.unique && <span>Your collection name must be unique.</span>}

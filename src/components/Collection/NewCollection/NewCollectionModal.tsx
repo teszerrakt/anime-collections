@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import useLocalStorage, { LS_KEY } from '../../../hooks/useLocalStorage'
 import Modal from '../../Modal/Modal'
 import Button from '../../Button/Button'
@@ -9,6 +9,7 @@ import CollectionCard from '../CollectionCard'
 import { Collections } from '../AddToCollectionButton'
 import NewCollectionForm from './NewCollectionForm'
 import { useParams } from 'react-router-dom'
+import { COLORS } from '../../../styles/Constants'
 
 interface NewCollectionModalProps {
   isVisible: boolean,
@@ -18,19 +19,8 @@ interface NewCollectionModalProps {
 export default function NewCollectionModal({ isVisible, onClose }: NewCollectionModalProps) {
   const [chosenCollections, setChosenCollections] = useState<string[]>([])
   const [showForm, setShowForm] = useState(false)
-  const [refreshLocalStorage, setRefreshLocalStorage] = useState<boolean>(false)
   const [collections, setCollections] = useLocalStorage<Collections>(LS_KEY.COLLECTIONS, {})
   const params = useParams()
-
-  useEffect(() => {
-    const newCollections = window.localStorage.getItem(LS_KEY.COLLECTIONS)
-    if (newCollections) {
-      setCollections(JSON.parse(newCollections))
-    }
-    // eslint-disable-next-line
-  }, [refreshLocalStorage])
-
-  const triggerRefreshLocalStorage = () => setRefreshLocalStorage(!refreshLocalStorage)
 
   const handleSubmit = () => {
     if (params.animeId) {
@@ -42,8 +32,6 @@ export default function NewCollectionModal({ isVisible, onClose }: NewCollection
       }, {})
       setCollections(prevState => ({ ...prevState, ...newCollections }))
     }
-
-    onClose()
   }
 
   return (
@@ -69,10 +57,7 @@ export default function NewCollectionModal({ isVisible, onClose }: NewCollection
         />
         {showForm && <NewCollectionForm
           collections={collections}
-          onSubmit={() => {
-            setShowForm(false)
-            triggerRefreshLocalStorage()
-          }}
+          onSubmit={() => setShowForm(false)}
           onCancel={() => setShowForm(false)} />}
         <div
           className='scrollbar'
@@ -89,6 +74,7 @@ export default function NewCollectionModal({ isVisible, onClose }: NewCollection
             return <CollectionCard
               key={key}
               id={key}
+              color={COLORS.black}
               setChosenCollections={setChosenCollections}
             />
           })}
