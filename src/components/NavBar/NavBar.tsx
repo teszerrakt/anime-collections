@@ -23,6 +23,7 @@ const DEFAULT_MENU: Menu[] = [
 
 const navBarStyle = css({
   position: 'fixed',
+  left: 0,
   bottom: 0,
   display: 'flex',
   height: 72,

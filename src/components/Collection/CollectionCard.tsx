@@ -4,13 +4,15 @@ import { ANIME_DETAIL, AnimeDetailData, AnimeDetailVars } from '../../gql/querie
 import useLocalStorage, { LS_KEY } from '../../hooks/useLocalStorage'
 import { css } from '@emotion/react'
 import { bgOverlay, COLORS } from '../../styles/Constants'
-import { Collections } from './NewCollection/NewCollection'
+import { Collections } from './AddToCollectionButton'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { BsFillCheckCircleFill } from 'react-icons/bs'
+import defaultImage from '../../assets/image/default-banner-image-small.png'
 
 interface CollectionCardProps {
   id: string
   setChosenCollections?: Dispatch<SetStateAction<string[]>>
+  onClick?: () => void
 }
 
 const collectionCardStyle = css({
@@ -54,7 +56,7 @@ const activeOverlayStyle = css({
   fontSize: '2rem',
 })
 
-export default function CollectionCard({ id, setChosenCollections }: CollectionCardProps) {
+export default function CollectionCard({ id, setChosenCollections, onClick }: CollectionCardProps) {
   const [isClicked, setIsClicked] = useState(false)
   const [collections] = useLocalStorage<Collections>(LS_KEY.COLLECTIONS, {})
   const currentCollection = collections[id]
@@ -80,9 +82,9 @@ export default function CollectionCard({ id, setChosenCollections }: CollectionC
   }
 
   return (
-    <div css={collectionCardStyle} onClick={handleClick}>
+    <div css={collectionCardStyle} onClick={setChosenCollections ? handleClick : onClick}>
       {isClicked && <div css={activeOverlayStyle}><BsFillCheckCircleFill /></div>}
-      <div css={[bgOverlay, imageStyle]} style={{ backgroundImage: `url(${data?.Media.bannerImage || data?.Media.coverImage.extraLarge})` }} />
+      <div css={[bgOverlay, imageStyle]} style={{ backgroundImage: `url(${data?.Media.bannerImage || data?.Media.coverImage.extraLarge || defaultImage})` }} />
       <div css={additionalInfoStyle}>{id} | {currentCollection.length} Anime{currentCollection.length > 1 && 's'}</div>
     </div>
   )

@@ -5,7 +5,7 @@ import { useState } from 'react'
 import useLocalStorage, { LS_KEY } from '../../../hooks/useLocalStorage'
 import { useParams } from 'react-router-dom'
 import Button from '../../Button/Button'
-import { Collections } from './NewCollection'
+import { Collections } from '../AddToCollectionButton'
 
 const collectionFormStyle = css({
   marginTop: '1rem',

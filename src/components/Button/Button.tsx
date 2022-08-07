@@ -21,6 +21,7 @@ const buttonStyle = css({
   border: `solid 1px ${COLORS.green}`,
   borderRadius: '0.25rem',
   cursor: 'pointer',
+  outline: 'none',
   svg: {
     fontSize: '1.5rem',
     marginRight: '0.25rem',

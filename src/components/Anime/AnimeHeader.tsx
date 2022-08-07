@@ -2,6 +2,7 @@
 import { AiFillStar } from 'react-icons/ai'
 import { COLORS, MQ, bgOverlay } from '../../styles/Constants'
 import { css } from '@emotion/react'
+import defaultImage from '../../assets/image/default-banner-image-large.png'
 
 const animeBannerStyle = css({
   position: 'relative',
@@ -70,7 +71,7 @@ export default function AnimeHeader({score, bannerImage, title}: AnimeHeaderProp
   const isNativeTitleShown: boolean = !!title.native && title.native !== title.romaji
 
   return (
-    <div css={[animeBannerStyle, bgOverlay]} style={{ backgroundImage: `url(${bannerImage})` }}>
+    <div css={[animeBannerStyle, bgOverlay]} style={{ backgroundImage: `url(${bannerImage || defaultImage})` }}>
       <div css={titleStyle}>
         <div className='romaji'>
           {title.romaji}

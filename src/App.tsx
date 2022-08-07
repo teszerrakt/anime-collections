@@ -14,10 +14,6 @@ import NavBar from './components/NavBar/NavBar'
 export default function App() {
   return (
     <div css={css({
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
       background: COLORS.black,
       color: COLORS.green,
       padding: '1rem',
@@ -26,9 +22,6 @@ export default function App() {
       <Router>
         <NavBar />
         <div css={css({
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
         })}>
           <Routes>
             <Route path='/animes' element={<AnimeListPage />} />

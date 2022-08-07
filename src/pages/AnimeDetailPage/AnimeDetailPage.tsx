@@ -6,7 +6,7 @@ import AnimeHeader from '../../components/Anime/AnimeHeader'
 import { Interweave } from 'interweave'
 import DetailCard, { DetailInfo } from '../../components/DetailCard/DetailCard'
 import { css } from '@emotion/react'
-import NewCollection from '../../components/Collection/NewCollection/NewCollection'
+import AddToCollection from '../../components/Collection/AddToCollectionButton'
 
 export default function AnimeDetailPage() {
   const params = useParams()
@@ -32,7 +32,7 @@ export default function AnimeDetailPage() {
         gap: '1rem',
       })}>
         <DetailCard
-          header={<div css={css({ display: 'flex', justifyContent: 'space-between' })}>Details <NewCollection />
+          header={<div css={css({ display: 'flex', justifyContent: 'space-between' })}>Details <AddToCollection />
           </div>}
         >
           <DetailInfo label='Genres'>{data.Media.genres.join(', ')}</DetailInfo>
