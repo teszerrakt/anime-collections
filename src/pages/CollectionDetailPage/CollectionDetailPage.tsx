@@ -12,6 +12,7 @@ import { BsFillTrashFill } from 'react-icons/bs'
 import { useState } from 'react'
 import ConfirmationModal from '../../components/Modal/ConfirmationModal/ConfirmationModal'
 import Empty from '../../components/Empty/Empty'
+import Loading from '../../components/Loading/Loading'
 
 const HEADER_HEIGHT = 72
 
@@ -91,13 +92,24 @@ export default function CollectionDetailPage() {
   )
 }
 
+const collectionCardLoadingStyle = css({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  background: COLORS['dark-gray'],
+  borderRadius: '0.5rem',
+  height: 315,
+  [MQ[1]]: {
+    height: 440
+  }
+})
 
 function CollectionAnimeCard({id}: {id: number}) {
   const { data, error, loading } = useQuery<AnimeDetailData, AnimeDetailVars>(ANIME_DETAIL, { variables: { id } })
   const navigate = useNavigate()
 
   // TODO: Create Loading Component
-  if (loading) return <div>Loading ...</div>
+  if (loading) return <Loading wrapperCss={collectionCardLoadingStyle}/>
   // TODO: Create Error Component
   if (error) return <div>{JSON.stringify(error)}</div>
 

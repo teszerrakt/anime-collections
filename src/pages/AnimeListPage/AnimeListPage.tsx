@@ -7,6 +7,7 @@ import AnimeCard from '../../components/Anime/AnimeCard'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Pagination from '../../components/Pagination/Pagination'
+import Loading, { loadingPageStyle } from '../../components/Loading/Loading'
 
 const AnimeListPageStyle = css({
   display: 'flex',
@@ -56,8 +57,7 @@ export default function AnimeListPage() {
     setPage(newPage)
   }
 
-  // TODO: Create Loading Component
-  if (loading) return <div>Loading ...</div>
+  if (loading) return <Loading wrapperCss={loadingPageStyle} message='Loading Anime List'/>
   // TODO: Create Error Component
   if (error) return <div>{JSON.stringify(error)}</div>
 
