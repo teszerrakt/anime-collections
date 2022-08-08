@@ -62,7 +62,6 @@ const CollectionForm = ({
 }: CollectionFormProps) => {
 
   const handleKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log(event)
     if (event.code === 'Enter' && !isError && name) {
       onSubmit()
     }
