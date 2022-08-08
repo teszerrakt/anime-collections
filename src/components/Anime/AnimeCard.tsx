@@ -2,8 +2,11 @@
 import { css } from '@emotion/react'
 import { COLORS, MQ } from '../../styles/Constants'
 import defaultImage from '../../assets/image/default-cover-image.png'
+import { useState } from 'react'
+import ActiveOverlay from '../ActiveOverlay/ActiveOverlay'
 
 const animeCardStyle = css({
+  position: 'relative',
   display: 'flex',
   flexDirection: 'column',
   textAlign: 'center',
@@ -37,13 +40,21 @@ const titleStyle = css({
 interface AnimeCardProps {
   imageUrl?: string
   title: string
-  onClick?: () => void
+  onClick?: (isClicked: boolean) => void
+  showOverlay?: boolean
 }
 
-export default function AnimeCard({imageUrl, title, onClick}: AnimeCardProps) {
+export default function AnimeCard({imageUrl, title, onClick, showOverlay = false}: AnimeCardProps) {
+  const [isClicked, setIsClicked] = useState<boolean>(false)
+
+  const handleClick = () => {
+    setIsClicked(!isClicked)
+    if (onClick) onClick(isClicked)
+  }
 
   return (
-    <div css={animeCardStyle} onClick={onClick}>
+    <div css={animeCardStyle} onClick={handleClick}>
+      <ActiveOverlay isVisible={isClicked && showOverlay}/>
       <img src={imageUrl || defaultImage} alt={`${title}`} />
       <div css={titleStyle}>{title}</div>
     </div>

@@ -15,9 +15,10 @@ import Empty from '../../Empty/Empty'
 interface NewCollectionModalProps {
   isVisible: boolean,
   onClose: () => void
+  chosenAnimes?: number[]
 }
 
-export default function NewCollectionModal({ isVisible, onClose }: NewCollectionModalProps) {
+export default function NewCollectionModal({ isVisible, onClose, chosenAnimes }: NewCollectionModalProps) {
   const [chosenCollections, setChosenCollections] = useState<string[]>([])
   const [showForm, setShowForm] = useState(false)
   const [collections, setCollections] = useLocalStorage<Collections>(LS_KEY.COLLECTIONS, {})
@@ -25,15 +26,13 @@ export default function NewCollectionModal({ isVisible, onClose }: NewCollection
   const params = useParams()
 
   const handleSubmit = () => {
-    if (params.animeId) {
-      const animeId = +params.animeId
-      const newCollections = chosenCollections.reduce((obj: Collections, name) => {
-        const currentCollection = collections[name].filter(id => id !== animeId)
-        obj[name] = [...currentCollection, animeId]
-        return obj
-      }, {})
-      setCollections(prevState => ({ ...prevState, ...newCollections }))
-    }
+    const newAnime = params.animeId ? [+params.animeId] : chosenAnimes ? chosenAnimes : []
+    const newCollections = chosenCollections.reduce((obj: Collections, name) => {
+      const currentCollection = collections[name]
+      obj[name] = [...currentCollection, ...newAnime].filter((x, i, a) => a.indexOf(x) == i)
+      return obj
+    }, {})
+    setCollections(prevState => ({ ...prevState, ...newCollections }))
   }
 
   return (

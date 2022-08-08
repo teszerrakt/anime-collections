@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Pagination from '../../components/Pagination/Pagination'
 import Loading, { loadingPageStyle } from '../../components/Loading/Loading'
+import AnimeBulkChooseButton from '../../components/Anime/AnimeBulkChooseButton'
 
 const AnimeListPageStyle = css({
   display: 'flex',
@@ -15,7 +16,7 @@ const AnimeListPageStyle = css({
   paddingBottom: 72,
   '.pagination': {
     marginTop: '1.5rem',
-  }
+  },
 })
 
 const AnimeListStyle = css({
@@ -32,6 +33,8 @@ const AnimeListStyle = css({
 
 export default function AnimeListPage() {
   const [page, setPage] = useState<number>(1)
+  const [isBulkChooseActive, setIsBulkChooseActive] = useState<boolean>(false)
+  const [chosenAnimes, setChosenAnimes] = useState<number[]>([])
   const { loading, error, data } = useQuery<AnimeListData, AnimeListVars>(ANIME_LIST, {
     variables: {
       page,
@@ -42,7 +45,7 @@ export default function AnimeListPage() {
   const isShowNext = data?.Page.pageInfo.hasNextPage
 
   useEffect(() => {
-    window.scrollTo({top: 0, behavior: 'smooth'})
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [page])
 
   const nextPage = () => {
@@ -57,7 +60,18 @@ export default function AnimeListPage() {
     setPage(newPage)
   }
 
-  if (loading) return <Loading wrapperCss={loadingPageStyle} message='Loading Anime List'/>
+  const handleClick = (id: number, isClicked: boolean) => {
+    if (isBulkChooseActive) {
+      isClicked ?
+        setChosenAnimes(prevState => [...prevState.filter(value => value !== id)])
+        :
+        setChosenAnimes(prevState => [...prevState, id])
+    } else {
+      navigate(`/animes/${id}`)
+    }
+  }
+
+  if (loading) return <Loading wrapperCss={loadingPageStyle} message='Loading Anime List' />
   // TODO: Create Error Component
   if (error) return <div>{JSON.stringify(error)}</div>
 
@@ -66,9 +80,23 @@ export default function AnimeListPage() {
       <div css={AnimeListStyle}>
         {data?.Page.media.map((anime) => {
           const { title: { romaji }, coverImage: { large }, bannerImage, id } = anime
-          return <AnimeCard key={id} imageUrl={large || bannerImage} title={romaji} onClick={() => navigate(`/animes/${id}`)} />
+          return (
+            <AnimeCard
+              key={id}
+              imageUrl={large || bannerImage}
+              title={romaji}
+              onClick={(isClicked) => handleClick(id, isClicked)}
+              showOverlay={isBulkChooseActive}
+            />
+          )
         })}
       </div>
+      <AnimeBulkChooseButton
+        isActive={isBulkChooseActive}
+        setIsActive={setIsBulkChooseActive}
+        chosenAnimes={chosenAnimes}
+        setChosenAnimes={setChosenAnimes}
+      />
       <Pagination page={page} disablePrev={page === 1} disableNext={!isShowNext} onPrev={prevPage} onNext={nextPage} />
     </div>
   )

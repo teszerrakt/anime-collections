@@ -12,6 +12,7 @@ import ConfirmationModal from '../Modal/ConfirmationModal/ConfirmationModal'
 import Loading from '../Loading/Loading'
 import { ImPencil } from 'react-icons/im'
 import EditNameModal from '../Modal/EditNameModal/EditNameModal'
+import ActiveOverlay from '../ActiveOverlay/ActiveOverlay'
 
 interface CollectionCardProps {
   id: string
@@ -52,18 +53,6 @@ const additionalInfoStyle = css({
   fontWeight: 'bold',
 })
 
-const activeOverlayStyle = css({
-  position: 'absolute',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  height: '100%',
-  width: '100%',
-  background: `${COLORS.black}80`,
-  zIndex: 10,
-  fontSize: '2rem',
-})
-
 const utilityContainerStyle = css({
   display: 'flex',
   gap: '1.5rem',
@@ -75,9 +64,9 @@ const utilityContainerStyle = css({
   },
   '.edit': {
     '&:hover': {
-      color: COLORS.yellow
-    }
-  }
+      color: COLORS.yellow,
+    },
+  },
 })
 
 const cardLoadingStyle = css({
@@ -148,7 +137,7 @@ export default function CollectionCard({
 
   return (
     <div css={collectionCardStyle(color)} onClick={setChosenCollections ? handleClick : onClick}>
-      {isClicked && <div css={activeOverlayStyle}><BsFillCheckCircleFill /></div>}
+      <ActiveOverlay isVisible={isClicked} />
       <div css={[bgOverlay, imageStyle(color)]}
            style={{ backgroundImage: `url(${data?.Media.bannerImage || data?.Media.coverImage.extraLarge || defaultImage})` }} />
       <div css={additionalInfoStyle}>
