@@ -71,7 +71,6 @@ export default function CollectionListPage() {
         />
         {showForm &&
           <NewCollectionForm
-            collections={collections}
             color={COLORS['dark-gray']}
             inputColor={COLORS.black}
             onSubmit={() => setShowForm(false)}

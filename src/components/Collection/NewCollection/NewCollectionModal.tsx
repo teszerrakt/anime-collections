@@ -58,7 +58,6 @@ export default function NewCollectionModal({ isVisible, onClose }: NewCollection
           onClick={() => setShowForm(!showForm)}
         />
         {showForm && <NewCollectionForm
-          collections={collections}
           onSubmit={() => setShowForm(false)}
           onCancel={() => setShowForm(false)} />}
         <div
