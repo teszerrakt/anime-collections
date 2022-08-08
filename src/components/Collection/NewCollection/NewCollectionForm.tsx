@@ -43,18 +43,17 @@ const errorStyle = css({
 const validationStyle = css({ fontSize: '0.75rem' })
 
 interface CollectionFormProps {
-  collections: Collections
   onCancel: () => void
   onSubmit: () => void
   color?: string
   inputColor?: string
 }
 
-export default function NewCollectionForm({ onCancel, onSubmit, collections, color = COLORS.black, inputColor = COLORS['dark-gray'] }: CollectionFormProps) {
+export default function NewCollectionForm({ onCancel, onSubmit, color = COLORS.black, inputColor = COLORS['dark-gray'] }: CollectionFormProps) {
   const [name, setName] = useState<string>('')
   const [error, setError] = useState({ specialChars: false, unique: false })
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_collections, setCollections] = useLocalStorage(LS_KEY.COLLECTIONS, collections)
+  const [collections, setCollections] = useLocalStorage<Collections>(LS_KEY.COLLECTIONS, {})
   const params = useParams()
   const isError = error.specialChars || error.unique
 
