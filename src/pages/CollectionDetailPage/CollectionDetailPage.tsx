@@ -13,6 +13,8 @@ import { useState } from 'react'
 import ConfirmationModal from '../../components/Modal/ConfirmationModal/ConfirmationModal'
 import Empty from '../../components/Empty/Empty'
 import Loading from '../../components/Loading/Loading'
+import { ImPencil } from 'react-icons/im'
+import EditNameModal from '../../components/Modal/EditNameModal/EditNameModal'
 
 const HEADER_HEIGHT = 72
 
@@ -68,23 +70,55 @@ const headerStyle = css({
   },
 })
 
+const editButtonStyle = css({
+  display: 'flex',
+  margin: '0 1rem',
+  padding: '0.5rem 0.75rem',
+  fontSize: '1rem',
+  borderRadius: '0.25rem',
+  border: `solid 1px ${COLORS.green}`,
+  backgroundColor: COLORS.black,
+  color: COLORS.green,
+  cursor: 'pointer',
+  svg: {
+    margin: '0 0.5rem 0 0',
+  },
+  '&:hover': {
+    filter: 'brightness(0.8)',
+  },
+})
+
 export default function CollectionDetailPage() {
   const params = useParams()
   const collectionId = params.collectionId!
   const [collections] = useLocalStorage<Collections>(LS_KEY.COLLECTIONS, {})
+  const [showModal, setShowModal] = useState<boolean>(false)
   const navigate = useNavigate()
   const currentCollection = collections[collectionId]
-  const isEmpty= currentCollection.length < 1
+  const isEmpty = currentCollection.length < 1
 
   return (
     <>
-      <header css={headerStyle}><IoIosArrowBack onClick={() => navigate('/collections')} /> {collectionId}</header>
+      <header css={headerStyle}>
+        <IoIosArrowBack onClick={() => navigate('/collections')} />
+        {collectionId}
+        <button css={editButtonStyle} onClick={() => setShowModal(true)}>
+          <ImPencil />
+          Edit
+        </button>
+        <EditNameModal
+          id={collectionId}
+          onClose={() => setShowModal(false)}
+          isVisible={showModal}
+          isNavigateOnSubmit={true}
+        />
+      </header>
       <div css={[collectionDetailPageStyle, isEmpty && emptyStyle]}>
         {isEmpty ?
-          <Empty message={`You haven't added any anime to this collection.`}/>
+          <Empty message={`You haven't added any anime to this collection.`} />
           :
           <div css={collectionDetailStyle}>
-            {currentCollection.map(id => <CollectionAnimeCard id={id} key={id}/>)}
+            {currentCollection.map(id => <CollectionAnimeCard id={id} key={id} />)}
           </div>
         }
       </div>
@@ -100,16 +134,16 @@ const collectionCardLoadingStyle = css({
   borderRadius: '0.5rem',
   height: 315,
   [MQ[1]]: {
-    height: 440
-  }
+    height: 440,
+  },
 })
 
-function CollectionAnimeCard({id}: {id: number}) {
+function CollectionAnimeCard({ id }: { id: number }) {
   const { data, error, loading } = useQuery<AnimeDetailData, AnimeDetailVars>(ANIME_DETAIL, { variables: { id } })
   const navigate = useNavigate()
 
   // TODO: Create Loading Component
-  if (loading) return <Loading wrapperCss={collectionCardLoadingStyle}/>
+  if (loading) return <Loading wrapperCss={collectionCardLoadingStyle} />
   // TODO: Create Error Component
   if (error) return <div>{JSON.stringify(error)}</div>
 

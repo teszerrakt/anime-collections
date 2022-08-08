@@ -6,10 +6,12 @@ import { useNameValidation } from '../../../hooks/useNameValidation'
 import useLocalStorage, { LS_KEY } from '../../../hooks/useLocalStorage'
 import { Collections } from '../../Collection/AddToCollectionButton'
 import { COLORS } from '../../../styles/Constants'
+import { useNavigate } from 'react-router-dom'
 
 interface EditNameModalProps extends Omit<ModalProps, 'footer' | 'children' | 'onCancel'> {
   id: string
   onClose: () => void
+  isNavigateOnSubmit?: boolean
 }
 
 const modalBodyStyle = css({
@@ -22,10 +24,12 @@ export default function EditNameModal({
   id,
   isVisible,
   onClose,
+  isNavigateOnSubmit = false
 }: EditNameModalProps) {
   const {name, validateName, error, isError} = useNameValidation(id)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_collections, setCollections] = useLocalStorage<Collections>(LS_KEY.COLLECTIONS, {})
+  const navigate = useNavigate()
 
   const handleSubmit = () => {
     setCollections(prevState => {
@@ -34,6 +38,7 @@ export default function EditNameModal({
       delete copy[id]
       return copy
     })
+    if (isNavigateOnSubmit) navigate(`/collections/${name}`)
   }
 
   return (
