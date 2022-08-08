@@ -19,7 +19,7 @@ import Header, { HEADER_HEIGHT } from '../../components/Header/Header'
 
 const collectionDetailPageStyle = css({
   overflowX: 'hidden',
-  paddingTop: `calc(${HEADER_HEIGHT}px + 0.25rem)`,
+  paddingTop: `calc(${HEADER_HEIGHT[1]}px + 0.25rem)`,
   display: 'flex',
   flexDirection: 'column',
   paddingBottom: 72,
@@ -44,7 +44,7 @@ const emptyStyle = css({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  height: `calc(100vh - 2 * 1rem - ${HEADER_HEIGHT}px)`,
+  height: `calc(100vh - 2 * 1rem - ${HEADER_HEIGHT[1]}px)`,
   padding: 0,
 })
 

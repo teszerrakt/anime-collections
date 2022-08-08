@@ -11,6 +11,7 @@ interface NewCollectionFormProps {
   onSubmit: () => void
   color?: string
   inputColor?: string
+  chosenAnimes?: number[]
 }
 
 export default function NewCollectionForm({
@@ -18,6 +19,7 @@ export default function NewCollectionForm({
   onSubmit,
   color = COLORS.black,
   inputColor = COLORS['dark-gray'],
+  chosenAnimes
 }: NewCollectionFormProps) {
   const { name, error, isError, validateName, resetState } = useNameValidation('')
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -26,7 +28,7 @@ export default function NewCollectionForm({
 
   const handleSubmit = () => {
     const currentCollection = collections[name] || []
-    const newAnimeList = params.animeId ? [...currentCollection, +params.animeId] : []
+    const newAnimeList = params.animeId ? [...currentCollection, +params.animeId] :  chosenAnimes ? [...currentCollection, ...chosenAnimes] : []
     setCollections({ ...collections, [name]: newAnimeList })
     if (name && !isError) {
       onSubmit()

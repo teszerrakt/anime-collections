@@ -5,7 +5,7 @@ import { HiPlusCircle } from 'react-icons/hi'
 import NewCollectionModal from '../Collection/NewCollection/NewCollectionModal'
 import { css } from '@emotion/react'
 
-interface AnimeBulkChooseButton {
+interface AnimeBulkChooseButtonProps {
   isActive: boolean
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>
   chosenAnimes: number[]
@@ -15,11 +15,11 @@ interface AnimeBulkChooseButton {
 const animeBulkChooseButtonStyle = css({
 })
 
-export default function AnimeBulkChooseButton({ isActive, setIsActive, chosenAnimes, setChosenAnimes }: AnimeBulkChooseButton) {
+export default function AnimeBulkChooseButton({ isActive, setIsActive, chosenAnimes, setChosenAnimes }: AnimeBulkChooseButtonProps) {
   const [showModal, setShowModal] = useState<boolean>(false)
 
   const handleClick = () => {
-    chosenAnimes.length < 1 && setIsActive(!isActive)
+    setIsActive(!isActive)
     if (isActive) {
         setShowModal(true)
     }
@@ -35,9 +35,10 @@ export default function AnimeBulkChooseButton({ isActive, setIsActive, chosenAni
     <div css={animeBulkChooseButtonStyle}>
       <Button
         Icon={<HiPlusCircle />}
-        text={isActive ? 'Add to Collection' : 'Select Animes'}
+        text={isActive ? 'Proceed' : 'Bulk Add to Collection'}
         onClick={handleClick}
         isLarge
+        disabled={isActive && chosenAnimes.length < 1}
       />
       <NewCollectionModal isVisible={showModal} onClose={handleCloseModal} chosenAnimes={chosenAnimes}/>
     </div>

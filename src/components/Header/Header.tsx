@@ -7,7 +7,7 @@ interface HeaderProps {
   children?: React.ReactNode
 }
 
-export const HEADER_HEIGHT = 72
+export const HEADER_HEIGHT = [120, 72]
 
 const headerStyle = css({
   position: 'fixed',
@@ -19,7 +19,7 @@ const headerStyle = css({
   fontSize: '1.5rem',
   fontWeight: 'bold',
   backgroundColor: COLORS['dark-gray'],
-  height: HEADER_HEIGHT,
+  height: HEADER_HEIGHT[1],
   width: '100vw',
 })
 

@@ -29,6 +29,7 @@ export default function NewCollectionModal({ isVisible, onClose, chosenAnimes }:
     const newAnime = params.animeId ? [+params.animeId] : chosenAnimes ? chosenAnimes : []
     const newCollections = chosenCollections.reduce((obj: Collections, name) => {
       const currentCollection = collections[name]
+      // eslint-disable-next-line eqeqeq
       obj[name] = [...currentCollection, ...newAnime].filter((x, i, a) => a.indexOf(x) == i)
       return obj
     }, {})
@@ -57,6 +58,7 @@ export default function NewCollectionModal({ isVisible, onClose, chosenAnimes }:
           onClick={() => setShowForm(!showForm)}
         />
         {showForm && <NewCollectionForm
+          chosenAnimes={chosenAnimes}
           onSubmit={() => setShowForm(false)}
           onCancel={() => setShowForm(false)} />}
         <div
