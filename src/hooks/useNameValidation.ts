@@ -8,7 +8,7 @@ export interface NameError {
 }
 
 export function useNameValidation(initialState: string) {
-  const [name, setName] = useState<string>('')
+  const [name, setName] = useState<string>(initialState)
   const [error, setError] = useState<NameError>({ specialChars: false, unique: false })
   const [collections] = useLocalStorage<Collections>(LS_KEY.COLLECTIONS, {})
   const isError = error.specialChars || error.unique

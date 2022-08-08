@@ -1,42 +1,59 @@
 /** @jsxImportSource @emotion/react */
 import Modal, { ModalProps } from '../Modal'
-import Button from '../../Button/Button'
-import { css } from '@emotion/react/dist/emotion-react.cjs'
+import { css } from '@emotion/react'
+import CollectionForm from '../../Collection/CollectionForm/CollectionForm'
+import { useNameValidation } from '../../../hooks/useNameValidation'
+import useLocalStorage, { LS_KEY } from '../../../hooks/useLocalStorage'
+import { Collections } from '../../Collection/AddToCollectionButton'
+import { COLORS } from '../../../styles/Constants'
 
-interface EditNameModalProps extends Omit<ModalProps, 'footer'> {
+interface EditNameModalProps extends Omit<ModalProps, 'footer' | 'children' | 'onCancel'> {
   id: string
-  onSubmit?: () => void
-  onCancel?: () => void
+  onClose: () => void
 }
 
-const modalFooterStyle = css({
-  display: 'flex',
-  gap: '1rem',
+const modalBodyStyle = css({
+  form: {
+    marginTop: 0,
+  }
 })
 
 export default function EditNameModal({
   id,
   isVisible,
-  header,
-  children,
   onClose,
-  onSubmit,
-  onCancel,
 }: EditNameModalProps) {
+  const {name, validateName, error, isError} = useNameValidation(id)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_collections, setCollections] = useLocalStorage<Collections>(LS_KEY.COLLECTIONS, {})
 
+  const handleSubmit = () => {
+    setCollections(prevState => {
+      const copy = { ...prevState }
+      copy[name] = copy[id]
+      delete copy[id]
+      return copy
+    })
+  }
 
   return (
     <Modal
       isVisible={isVisible}
-      header={header}
+      header={`Edit ${id}`}
       onClose={onClose}
-      footer={
-        <div css={modalFooterStyle}>
-          <Button text='Cancel' type='ghost' isFullWidth isLarge onClick={onCancel} />
-          <Button text='Submit' isFullWidth isLarge onClick={onSubmit} />
-        </div>}
     >
-      {children}
+      <div css={modalBodyStyle}>
+        <CollectionForm
+          name={name}
+          error={error}
+          isError={isError}
+          onChange={validateName}
+          onSubmit={handleSubmit}
+          onCancel={onClose}
+          inputColor={COLORS.black}
+          color='transparent'
+        />
+      </div>
     </Modal>
   )
 }
