@@ -14,6 +14,8 @@ const activeOverlayStyle = css({
   alignItems: 'center',
   height: '100%',
   width: '100%',
+  top: 0,
+  left: 0,
   background: `${COLORS.black}80`,
   zIndex: 10,
   fontSize: '2rem',
