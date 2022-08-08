@@ -30,6 +30,7 @@ const inputStyle = (inputColor: string) => css({
   flexDirection: 'column',
   marginBottom: '1rem',
   padding: '0.5rem',
+  fontSize: 16,
   backgroundColor: inputColor,
   color: COLORS.green,
   borderRadius: '0.25rem',
