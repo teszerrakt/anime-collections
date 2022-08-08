@@ -8,7 +8,7 @@ export interface Collections {
   [collectionId: string]: number[]
 }
 
-export default function NewCollectionButton() {
+export default function AddToNewCollectionButton() {
   const [showModal, setShowModal] = useState<boolean>(false)
 
   return (
