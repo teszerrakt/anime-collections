@@ -69,7 +69,7 @@ export default function AnimeDetailPage() {
         gap: '1rem',
       })}>
         <DetailCard
-          header={<div css={css({ display: 'flex', justifyContent: 'space-between' })}>Collections <AddToCollection />
+          header={<div css={css({ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem'})}>Collections <AddToCollection />
           </div>}
         >
           {collectionList ?

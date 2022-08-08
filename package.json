@@ -26,6 +26,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "clean": "rm -rf node_modules && rm -f yarn.lock && rm -rf build && yarn cache clean",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

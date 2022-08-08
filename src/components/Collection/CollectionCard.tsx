@@ -9,7 +9,9 @@ import { Dispatch, SetStateAction, useState } from 'react'
 import { BsFillCheckCircleFill, BsFillTrashFill } from 'react-icons/bs'
 import defaultImage from '../../assets/image/default-banner-image-small.png'
 import ConfirmationModal from '../Modal/ConfirmationModal/ConfirmationModal'
-import Loading  from '../Loading/Loading'
+import Loading from '../Loading/Loading'
+import { ImPencil } from 'react-icons/im'
+import EditNameModal from '../Modal/EditNameModal/EditNameModal'
 
 interface CollectionCardProps {
   id: string
@@ -63,12 +65,19 @@ const activeOverlayStyle = css({
 })
 
 const utilityContainerStyle = css({
+  display: 'flex',
+  gap: '1.5rem',
   zIndex: 2,
   '.delete': {
     '&:hover': {
       color: 'darkred',
     },
   },
+  '.edit': {
+    '&:hover': {
+      color: COLORS.yellow
+    }
+  }
 })
 
 const cardLoadingStyle = css({
@@ -79,8 +88,8 @@ const cardLoadingStyle = css({
   height: 144,
   borderRadius: '0.25rem',
   '> div': {
-    top: '0.5rem'
-  }
+    top: '0.5rem',
+  },
 })
 
 export default function CollectionCard({
@@ -92,7 +101,8 @@ export default function CollectionCard({
 }: CollectionCardProps) {
   const [isClicked, setIsClicked] = useState(false)
   const [collections, setCollections] = useLocalStorage<Collections>(LS_KEY.COLLECTIONS, {})
-  const [showModal, setShowModal] = useState<boolean>(false)
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
+  const [showEditNameModal, setShowEditNameModal] = useState<boolean>(false)
   const [chosenCollection, setChosenCollection] = useState<string>('')
   const currentCollection = collections[id]
   const isEmpty = currentCollection.length < 1
@@ -104,17 +114,22 @@ export default function CollectionCard({
 
   const openConfirmationModal = (id: string) => {
     setChosenCollection(id)
-    setShowModal(true)
+    setShowDeleteModal(true)
+  }
+
+  const openEditNameModal = (id: string) => {
+    setChosenCollection(id)
+    setShowEditNameModal(true)
   }
 
   const handleDelete = () => {
     setCollections(prevState => {
-      const copy = {...prevState}
+      const copy = { ...prevState }
       delete copy[id]
       return copy
     })
     setChosenCollection('')
-    setShowModal(false)
+    setShowDeleteModal(false)
   }
 
   const handleClick = () => {
@@ -127,7 +142,7 @@ export default function CollectionCard({
     }
   }
 
-  if (loading && !isEmpty) return <Loading wrapperCss={cardLoadingStyle}/>
+  if (loading && !isEmpty) return <Loading wrapperCss={cardLoadingStyle} />
   // TODO: Create Error Component
   if (error && !isEmpty) return <div>{JSON.stringify(error)}</div>
 
@@ -139,6 +154,10 @@ export default function CollectionCard({
       <div css={additionalInfoStyle}>
         <span>{id} | {currentCollection.length} Anime{currentCollection.length > 1 && 's'}</span>
         {showUtilities && <span css={utilityContainerStyle}>
+          <ImPencil className='edit' onClick={event => {
+            openEditNameModal(id)
+            event.stopPropagation()
+          }} />
           <BsFillTrashFill className='delete' onClick={event => {
             openConfirmationModal(id)
             event.stopPropagation()
@@ -146,14 +165,19 @@ export default function CollectionCard({
         </span>}
       </div>
       <ConfirmationModal
-        isVisible={showModal}
-        onClose={() => setShowModal(false)}
-        onCancel={() => setShowModal(false)}
+        isVisible={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onCancel={() => setShowDeleteModal(false)}
         onSubmit={handleDelete}
         header='Delete Collection'
       >
         Are you sure you want to delete {chosenCollection}?
       </ConfirmationModal>
+      <EditNameModal
+        id={chosenCollection}
+        onClose={() => setShowEditNameModal(false)}
+        isVisible={showEditNameModal}
+      />
     </div>
   )
 }
