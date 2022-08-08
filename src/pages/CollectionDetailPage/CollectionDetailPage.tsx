@@ -15,8 +15,7 @@ import Empty from '../../components/Empty/Empty'
 import Loading from '../../components/Loading/Loading'
 import { ImPencil } from 'react-icons/im'
 import EditNameModal from '../../components/Modal/EditNameModal/EditNameModal'
-
-const HEADER_HEIGHT = 72
+import Header, { HEADER_HEIGHT } from '../../components/Header/Header'
 
 const collectionDetailPageStyle = css({
   overflowX: 'hidden',
@@ -49,27 +48,6 @@ const emptyStyle = css({
   padding: 0,
 })
 
-const headerStyle = css({
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  zIndex: 100,
-  display: 'flex',
-  alignItems: 'center',
-  fontSize: '1.5rem',
-  fontWeight: 'bold',
-  backgroundColor: COLORS['dark-gray'],
-  height: HEADER_HEIGHT,
-  width: '100vw',
-  svg: {
-    cursor: 'pointer',
-    margin: '0 1rem',
-    '&:hover': {
-      filter: 'brightness(0.8)',
-    },
-  },
-})
-
 const editButtonStyle = css({
   display: 'flex',
   margin: '0 1rem',
@@ -88,6 +66,16 @@ const editButtonStyle = css({
   },
 })
 
+const headerWrapperStyle = css({
+  svg: {
+    cursor: 'pointer',
+    margin: '0 1rem',
+    '&:hover': {
+      filter: 'brightness(0.8)',
+    },
+  },
+})
+
 export default function CollectionDetailPage() {
   const params = useParams()
   const collectionId = params.collectionId!
@@ -99,20 +87,22 @@ export default function CollectionDetailPage() {
 
   return (
     <>
-      <header css={headerStyle}>
-        <IoIosArrowBack onClick={() => navigate('/collections')} />
-        {collectionId}
-        <button css={editButtonStyle} onClick={() => setShowModal(true)}>
-          <ImPencil />
-          Edit
-        </button>
-        <EditNameModal
-          id={collectionId}
-          onClose={() => setShowModal(false)}
-          isVisible={showModal}
-          isNavigateOnSubmit={true}
-        />
-      </header>
+      <div css={headerWrapperStyle}>
+        <Header>
+          <IoIosArrowBack onClick={() => navigate('/collections')} />
+          {collectionId}
+          <button css={editButtonStyle} onClick={() => setShowModal(true)}>
+            <ImPencil />
+            Edit
+          </button>
+          <EditNameModal
+            id={collectionId}
+            onClose={() => setShowModal(false)}
+            isVisible={showModal}
+            isNavigateOnSubmit={true}
+          />
+        </Header>
+      </div>
       <div css={[collectionDetailPageStyle, isEmpty && emptyStyle]}>
         {isEmpty ?
           <Empty message={`You haven't added any anime to this collection.`} />

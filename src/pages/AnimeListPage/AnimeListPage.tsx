@@ -9,10 +9,12 @@ import { useNavigate } from 'react-router-dom'
 import Pagination from '../../components/Pagination/Pagination'
 import Loading, { loadingPageStyle } from '../../components/Loading/Loading'
 import AnimeBulkChooseButton from '../../components/Anime/AnimeBulkChooseButton'
+import Header, { HEADER_HEIGHT } from '../../components/Header/Header'
 
 const AnimeListPageStyle = css({
   display: 'flex',
   flexDirection: 'column',
+  paddingTop: `calc(${HEADER_HEIGHT}px + 0.25rem)`,
   paddingBottom: 72,
   '.pagination': {
     marginTop: '1.5rem',
@@ -77,6 +79,14 @@ export default function AnimeListPage() {
 
   return (
     <div id='animeListPage' css={AnimeListPageStyle}>
+      <Header>
+        <AnimeBulkChooseButton
+          isActive={isBulkChooseActive}
+          setIsActive={setIsBulkChooseActive}
+          chosenAnimes={chosenAnimes}
+          setChosenAnimes={setChosenAnimes}
+        />
+      </Header>
       <div css={AnimeListStyle}>
         {data?.Page.media.map((anime) => {
           const { title: { romaji }, coverImage: { large }, bannerImage, id } = anime
@@ -91,12 +101,6 @@ export default function AnimeListPage() {
           )
         })}
       </div>
-      <AnimeBulkChooseButton
-        isActive={isBulkChooseActive}
-        setIsActive={setIsBulkChooseActive}
-        chosenAnimes={chosenAnimes}
-        setChosenAnimes={setChosenAnimes}
-      />
       <Pagination page={page} disablePrev={page === 1} disableNext={!isShowNext} onPrev={prevPage} onNext={nextPage} />
     </div>
   )
