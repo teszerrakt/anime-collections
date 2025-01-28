@@ -9,4 +9,4 @@ Anime Collections website built using [AniList GraphQL API](https://anilist.gitb
 1. [Emotion](https://emotion.sh/docs/introduction)
 
 ## Live Website
-🕸️ https://anico.zsyihab.tech/
+🕸️ https://anico.zsyihab.com/
